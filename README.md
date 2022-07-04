@@ -7,4 +7,3 @@ Bodo Wired PCB, use QMK toolbox to flash firmware.
 Remember to clear `EEPROM` before flash.
 
 #### Known Issue
-- Underglow reset to red after disconnect
