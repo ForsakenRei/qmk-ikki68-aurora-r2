@@ -19,7 +19,7 @@
 void keyboard_post_init_user(void)
 {   
     #ifdef RGBLIGHT_ENABLE
-        rgblight_setrgb(RGB_WHITE);
+        rgblight_setrgb(0, 0, 0);
     #endif
     if (IS_HOST_LED_ON(USB_LED_NUM_LOCK))
   { // turn on Num lock by defautl
@@ -90,7 +90,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         KC_ESC,  KC_1,    KC_2,    KC_3,    KC_4,    KC_5,    KC_6,    KC_7,    KC_8,    KC_9,    KC_0,    KC_MINS, KC_EQL,  KC_BSPC, KC_BSPC,    KC_HOME, KC_PGUP,
         KC_TAB,  KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,    KC_Y,    KC_U,    KC_I,    KC_O,    KC_P,    KC_LBRC, KC_RBRC, KC_BSLS,             KC_END,  KC_PGDN,
         CAP_LYR, KC_A,    KC_S,    KC_D,    KC_F,    KC_G,    KC_H,    KC_J,    KC_K,    KC_L,    KC_SCLN, KC_QUOT,          KC_ENT,
-        KC_LSFT, KC_LSFT, KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,    KC_N,    KC_M,    KC_COMM, KC_DOT,  KC_SLSH, RSFT_L3, RSFT_L3,             KC_UP,
+        KC_LSFT, KC_LSFT, KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,    KC_N,    KC_M,    KC_COMM, KC_DOT,  KC_SLSH, KC_RSFT, RSFT_L3,             KC_UP,
         KC_LCTL, KC_LGUI, KC_LALT,          KC_SPC,           KC_SPC,           KC_SPC,           KC_RALT, FN_L2,   KC_RCTL,             KC_LEFT, KC_DOWN, KC_RGHT
     ),
     [_L1] = LAYOUT_all(
@@ -116,7 +116,6 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     )
 };
 
-
 // There is a total of 20 LEDs on the board; the 4 logo LEDs have indices 16, 17, 18, 19
 layer_state_t layer_state_set_user(layer_state_t layer_state) {
     switch (get_highest_layer(layer_state)) {
@@ -130,7 +129,7 @@ layer_state_t layer_state_set_user(layer_state_t layer_state) {
             {rgblight_setrgb(238, 0, 119);}
             break;
         default:
-            {rgblight_setrgb(255, 255, 255);}
+            {rgblight_setrgb(0, 0, 0);}
             break;
     }
     return layer_state;
@@ -254,7 +253,7 @@ void sft_finished(qk_tap_dance_state_t *state, void*user_data)
         set_oneshot_layer(_L3, ONESHOT_START); clear_oneshot_layer_state(ONESHOT_PRESSED);
         break;
     case TD_SINGLE_HOLD:
-        register_code(KC_RSFT);
+        layer_on(_L3);
         break;
     case TD_DOUBLE_TAP:
         if (layer_state_is(_L3))
@@ -278,7 +277,7 @@ void sft_reset(qk_tap_dance_state_t *state, void*user_data)
     // case TD_SINGLE_TAP:
     //   unregister_code(KC_RSFT);
     case TD_SINGLE_HOLD:
-    unregister_code(KC_RSFT);
+        layer_off(_L3);
         break;
     default:
         break;
@@ -300,3 +299,34 @@ const key_override_t **key_overrides = (const key_override_t *[]){
     NULL // Null terminate the array of overrides!
 };
 
+static uint16_t key_timer;
+static void refresh_rgb(void);
+static void check_rgb_timeout(void);
+bool is_rgb_timeout = false;
+
+void refresh_rgb() {
+    key_timer = timer_read();
+    if (is_rgb_timeout) {
+        is_rgb_timeout = false;
+        rgblight_wakeup();
+    }
+}
+
+void check_rgb_timeout() {
+    if (!is_rgb_timeout && timer_elapsed(key_timer) > RGBLIGHT_TIMEOUT) {
+        rgblight_suspend();
+        is_rgb_timeout = true;
+    }
+}
+
+void housekeeping_task_user(void) {
+    #ifdef RGBLIGHT_TIMEOUT
+    check_rgb_timeout();
+    #endif
+}
+
+void post_process_record_user(uint16_t keycode, keyrecord_t *record) {
+    #ifdef RGBLIGHT_TIMEOUT
+    if (record->event.pressed) refresh_rgb();
+    #endif
+}

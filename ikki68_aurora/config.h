@@ -54,9 +54,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
     #define RGBLIGHT_HUE_STEP 8
     #define RGBLIGHT_SAT_STEP 8
     #define RGBLIGHT_VAL_STEP 8
-    #define RGBLIGHT_LIMIT_VAL 255 /* The maximum brightness level */
+    #define RGBLIGHT_LIMIT_VAL 200 /* The maximum brightness level */
     #define RGBLIGHT_SLEEP  /* If defined, the RGB lighting will be switched off when the host goes to sleep */
-    #define RGB_DISABLE_TIMEOUT 900000
+    #define RGBLIGHT_TIMEOUT 90000
     #define RGBLIGHT_DEFAULT_SAT 0
 /*======= RGB function=======*/
 /*== all animations enable ==*/
