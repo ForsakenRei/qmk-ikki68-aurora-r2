@@ -1,4 +1,4 @@
-/* Copyright 2021 Paul Ewers
+/* Copyright 2022 shigure
  * 
  * This program is free software: you can redistribute it and/or modify 
  * it under the terms of the GNU General Public License as published by 
@@ -16,15 +16,9 @@
 
 #include QMK_KEYBOARD_H
 
-void keyboard_post_init_user(void)
+void matrix_init_user(void)
 {   
-    #ifdef RGBLIGHT_ENABLE
-        rgblight_setrgb(0, 0, 0);
-    #endif
-    if (IS_HOST_LED_ON(USB_LED_NUM_LOCK))
-  { // turn on Num lock by defautl
-    tap_code(KC_NUMLOCK);
-    }
+	rgblight_setrgb(0, 0, 0);
 }
 
 enum custom_keycodes
@@ -134,6 +128,16 @@ layer_state_t layer_state_set_user(layer_state_t layer_state) {
     }
     return layer_state;
 }
+
+bool led_update_user(led_t led_state) {
+    if (led_state.caps_lock) {
+        rgblight_setrgb(0, 40, 74);
+    }
+    else {
+        rgblight_setrgb(0, 0, 0);
+    }
+    return true;
+};
 
 // Determine the current tap dance state
 td_state_t cur_dance(qk_tap_dance_state_t *state)
@@ -299,34 +303,10 @@ const key_override_t **key_overrides = (const key_override_t *[]){
     NULL // Null terminate the array of overrides!
 };
 
-static uint16_t key_timer;
-static void refresh_rgb(void);
-static void check_rgb_timeout(void);
-bool is_rgb_timeout = false;
-
-void refresh_rgb() {
-    key_timer = timer_read();
-    if (is_rgb_timeout) {
-        is_rgb_timeout = false;
-        rgblight_wakeup();
-    }
-}
-
-void check_rgb_timeout() {
-    if (!is_rgb_timeout && timer_elapsed(key_timer) > RGBLIGHT_TIMEOUT) {
-        rgblight_suspend();
-        is_rgb_timeout = true;
-    }
-}
-
-void housekeeping_task_user(void) {
-    #ifdef RGBLIGHT_TIMEOUT
-    check_rgb_timeout();
-    #endif
-}
-
-void post_process_record_user(uint16_t keycode, keyrecord_t *record) {
-    #ifdef RGBLIGHT_TIMEOUT
-    if (record->event.pressed) refresh_rgb();
-    #endif
+void keyboard_post_init_user(void)
+{
+  if (IS_HOST_LED_ON(USB_LED_NUM_LOCK))
+  { // turn on Num lock by defautl
+    tap_code(KC_NUMLOCK);
+  }
 }
