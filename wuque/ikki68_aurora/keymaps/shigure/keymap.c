@@ -70,6 +70,7 @@ void sft_reset(qk_tap_dance_state_t *state, void *user_data);
 #define TSK_MGR C(S(KC_ESC))
 #define CTL_APP CTL_T(KC_APP)
 #define SEARCH G(S(KC_N))
+#define SFT_DEL S(KC_DEL)
 
 enum {
         _L0 = 0,
@@ -95,7 +96,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         _______, _______, _______,                           KC_DEL,                              _______, _______, CTL_APP,     _______, _______, _______
     ),
     [_L2] = LAYOUT_68_ansi_split_rshift(
-        KC_GRV,  _______, _______, _______, _______, _______, _______, KC_P7,   KC_P8,   KC_P9,   _______, KC_PMNS, KC_PPLS, _______,     _______, KC_SLEP,
+        KC_GRV,  _______, _______, _______, _______, _______, _______, KC_P7,   KC_P8,   KC_P9,   _______, KC_PMNS, KC_PPLS, SFT_DEL,     _______, KC_SLEP,
         _______, KC_HOME, KC_UP,   KC_END,  KC_PGUP, _______, _______, KC_P4,   KC_P5,   KC_P6,   _______, KC_PAST, KC_PSLS, _______,     _______, _______,
         _______, KC_LEFT, KC_DOWN, KC_RGHT, KC_PGDN, _______, _______, KC_P1,   KC_P2,   KC_P3,   _______, _______,          C(KC_ENT),
         _______,          _______, _______, KC_CALC, _______, _______, _______, KC_P0,   KC_P0,   KC_PDOT, KC_NUM,  _______, _______,     _______,
