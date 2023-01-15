@@ -9,4 +9,6 @@ Remember to clear `EEPROM` before flash.
 ## Or use QMK CLI to flash
 `qmk compile -kb wuque/ikki68_aurora -km shigure -j 32`
 
+`qmk flash -kb wuque/ikki68_aurora -km shigure -j 32`
+
 ## Known Issue
