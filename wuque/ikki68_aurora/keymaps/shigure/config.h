@@ -17,3 +17,13 @@
 #pragma once
 
 #define FORCE_NKRO
+
+#define ONESHOT_TAP_TAGGLE 3
+#define ONESHOT_TIMEOUT 1500
+
+#define TAPPING_TERM 200
+
+#define TAPPING_TOGGLE 2
+
+/*  Handle GRAVESC combo keys */
+#define GRAVE_ESC_CTRL_OVERRIDE
