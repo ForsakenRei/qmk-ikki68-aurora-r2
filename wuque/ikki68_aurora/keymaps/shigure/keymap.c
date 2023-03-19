@@ -309,11 +309,3 @@ const key_override_t **key_overrides = (const key_override_t *[]){
     &shift_f12_override,
     NULL // Null terminate the array of overrides!
 };
-
-void keyboard_post_init_user(void)
-{
-    if (IS_HOST_LED_ON(USB_LED_NUM_LOCK))
-    { // turn on Num lock by defautl
-        tap_code(KC_NUM);
-    }
-};
