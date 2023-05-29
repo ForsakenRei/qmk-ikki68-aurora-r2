@@ -27,3 +27,6 @@
 
 /*  Handle GRAVESC combo keys */
 #define GRAVE_ESC_CTRL_OVERRIDE
+
+#define RGBLIGHT_DEFAULT_VAL 0
+#define RGBLIGHT_DEFAULT_SAT 0
