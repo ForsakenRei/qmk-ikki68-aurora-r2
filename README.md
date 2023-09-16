@@ -1,9 +1,8 @@
-
-
 # QMK firmware for ikki68 Aurora R2 Snow Bodo Wired PCB
 
 ## Use QMK toolbox to flash
 `Fn`+`PgUp` to ender bootloader or hold `ESC` when plug the board in.
+
 Remember to clear `EEPROM` before flash.
 
 ## Or use QMK CLI to flash
