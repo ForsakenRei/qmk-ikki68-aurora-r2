@@ -120,33 +120,39 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 };
 
 // There is a total of 20 LEDs on the board; the 4 logo LEDs have indices 16, 17, 18, 19
-layer_state_t layer_state_set_user(layer_state_t layer_state) {
-    switch (get_highest_layer(layer_state)) {
-        case _L1:
-            {rgblight_setrgb(170, 204, 17);}
-            break;
-        case _L2: 
-            {rgblight_setrgb(255, 153, 0);}
-            break;
-        case _L3:
-            {rgblight_setrgb(238, 0, 119);}
-            break;
-        default:
-            {rgblight_setrgb(0, 0, 0);}
-            break;
-    }
-    return layer_state;
+const rgblight_segment_t PROGMEM my_capslock_layer[] = RGBLIGHT_LAYER_SEGMENTS(
+    {0, 20, HSV_WHITE});
+const rgblight_segment_t PROGMEM my_nav_layer[] = RGBLIGHT_LAYER_SEGMENTS(
+    {0, 20, HSV_GOLDENROD});
+const rgblight_segment_t PROGMEM my_num_layer[] = RGBLIGHT_LAYER_SEGMENTS(
+    {0, 20, HSV_CHARTREUSE});
+const rgblight_segment_t PROGMEM my_util_layer[] = RGBLIGHT_LAYER_SEGMENTS(
+    {0, 20, HSV_CORAL});
+
+const rgblight_segment_t *const PROGMEM my_rgb_layers[] = RGBLIGHT_LAYERS_LIST(
+    my_capslock_layer,
+    my_nav_layer,
+    my_num_layer,
+    my_util_layer);
+
+bool led_update_user(led_t led_state)
+{
+    rgblight_set_layer_state(0, led_state.caps_lock);
+    return true;
 }
 
-bool led_update_user(led_t led_state) {
-    if (led_state.caps_lock) {
-        rgblight_setrgb(0, 40, 74);
-    }
-    else {
-        rgblight_setrgb(0, 0, 0);
-    }
-    return true;
-};
+layer_state_t layer_state_set_user(layer_state_t state)
+{
+    rgblight_set_layer_state(1, layer_state_cmp(state, _L1));
+    rgblight_set_layer_state(2, layer_state_cmp(state, _L2));
+    rgblight_set_layer_state(3, layer_state_cmp(state, _L3));
+    return state;
+}
+
+void keyboard_post_init_user(void)
+{
+    rgblight_layers = my_rgb_layers;
+}
 
 // Determine the current tap dance state
 td_state_t cur_dance(tap_dance_state_t *state)
