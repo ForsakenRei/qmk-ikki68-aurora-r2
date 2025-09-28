@@ -16,8 +16,6 @@
 
 #pragma once
 
-#define FORCE_NKRO
-
 #define ONESHOT_TAP_TAGGLE 3
 #define ONESHOT_TIMEOUT 1500
 
