@@ -79,6 +79,7 @@ void sft_reset(tap_dance_state_t *state, void *user_data);
 #define SCR_RHT G(S(KC_RGHT))
 #define VD_LEFT G(C(KC_LEFT))
 #define VD_RGHT G(C(KC_RIGHT))
+#define CLIP_BD G(A(KC_V))
 
 enum {
         _L0 = 0,
@@ -100,7 +101,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         KC_GRV,  KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_F5,   KC_F6,   KC_F7,   KC_F8,   KC_F9,   KC_F10,  KC_F11,  KC_F12,  KC_DEL,      KC_INS,  KC_PSCR,
         _______, KC_HOME, KC_UP,   KC_END,  KC_PGUP, _______, _______, _______, _______, _______, _______, _______, _______, _______,     _______, _______,
         _______, KC_LEFT, KC_DOWN, KC_RGHT, KC_PGDN, _______, _______, VD_LEFT, SCR_LFT, SCR_RHT, VD_RGHT, _______,          KC_ENT,
-        _______,          KC_WBAK, KC_BSPC, KC_WFWD, _______, _______, SEARCH,  TSK_MGR, _______, _______, _______, _______, _______,     _______,
+        _______,          KC_WBAK, KC_BSPC, KC_WFWD, CLIP_BD, _______, SEARCH,  TSK_MGR, _______, _______, _______, _______, _______,     _______,
         _______, _______, _______,                           KC_DEL,                              _______, _______, CTL_APP,     _______, _______, _______
     ),
     [_L2] = LAYOUT_68_ansi_split_rshift(
